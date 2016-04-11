@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,6 +21,8 @@ import java.util.List;
  */
 public class Operations {
     public List<Client> clients = new ArrayList<>();
+    
+    public Client itemToRemove = new Client();
     
     public void Save(String path){
         try {
@@ -53,20 +56,35 @@ public class Operations {
         int id = generateID();
         Client client = new Client(generateID(),name,surname,pesel,address,0.0,password,false);
         clients.add(client);
+        Collections.sort(clients,(o1, o2) -> o1.getAccountNumber()-o2.getAccountNumber());
         Save("C:/Java/clients.txt");
         
     }
+    
+    public void DeleteClient(int ID) throws ClassNotFoundException{
+        Load("C:/Java/clients.txt");
+        List<Client> deleteCandidates = new ArrayList<>();
+        for (Client current : clients){
+            if(current.getAccountNumber()==ID){
+                deleteCandidates.add(current);                 
+            }           
+        }
+        clients.removeAll(deleteCandidates);
+        
+        Save("C:/Java/clients.txt");
+    }
     private int generateID(){
         int last=10000,generated;
-        for(int i=0;i<clients.size();i++) {
-            if(clients.get(i).getAccountNumber()==0){
+        if(clients.size()==1){
+                last = 10001;
+        }
+        for(int i=1;i<clients.size();i++) {
+            last = clients.get(i).getAccountNumber();
+                
+            if(clients.get(i).getAccountNumber()-clients.get(i-1).getAccountNumber()!=1){
                 last = clients.get(i-1).getAccountNumber();
                 break;
             }
-            else {
-                last = clients.get(i).getAccountNumber();
-            }
-            
         }
         generated = last+1;
         return generated;

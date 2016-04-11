@@ -44,22 +44,20 @@ public class AdminScreenController implements Initializable {
     int selectedID;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         ClientsList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Client>() {
             @Override
             public void changed(ObservableValue<? extends Client> observable, Client oldValue, Client newValue) {
-                selectedID = newValue.getAccountNumber();
-                System.out.println("Wybrano klienta o ID:" + selectedID);
+                if(newValue!=null){
+                    selectedID = newValue.getAccountNumber();
+                }
+                
+                //System.out.println("Wybrano klienta o ID:" + selectedID);
             }
         });
-    }
-    @FXML
-    private void handleAddButton(ActionEvent event) throws IOException, ClassNotFoundException {
         
-        op.AddClient(nameBox.getText(), surnameBox.getText(), peselBox.getText(), addressBox.getText(), passwordBox.getText());
-        addSuccess.setVisible(true);
     }
-    @FXML
-    private void handleGetAllButton(ActionEvent event) throws ClassNotFoundException{
+    private void refreshList() throws ClassNotFoundException {
         op.Load("C:/Java/clients.txt");
         ObservableList<Client> myObservableList = FXCollections.observableList(op.clients);
         ClientsList.setItems(myObservableList);
@@ -85,12 +83,36 @@ public class AdminScreenController implements Initializable {
             }
         });
        
+    }
+    @FXML
+    private void handleAddButton(ActionEvent event) throws IOException, ClassNotFoundException {
         
+        op.AddClient(nameBox.getText(), surnameBox.getText(), peselBox.getText(), addressBox.getText(), passwordBox.getText());       
+        refreshList();        
+    }
+    @FXML
+    private void handleGetAllButton(ActionEvent event) throws ClassNotFoundException {
+        refreshList();        
     }
     
     @FXML
-    private void handleDeleteButton(ActionEvent event){
-            
+    private void handleDeleteButton(ActionEvent event) throws ClassNotFoundException{
+        
+        op.DeleteClient(selectedID);
+        int selectedIdx = ClientsList.getSelectionModel().getSelectedIndex();         
+         final int newSelectedIdx =
+            (selectedIdx == ClientsList.getItems().size() - 1)
+               ? selectedIdx - 1
+               : selectedIdx;
+         refreshList();
+         ClientsList.getSelectionModel().select(newSelectedIdx);
+         
+         
+         
+         
+         
+         
+         
     }
     
 }
