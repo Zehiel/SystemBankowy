@@ -22,7 +22,8 @@ public class SystemBankowy extends Application {
         Parent root;
         root = FXMLLoader.load(getClass().getResource("Login.fxml"));
         
-        Scene scene = new Scene(root);        
+        Scene scene = new Scene(root);  
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

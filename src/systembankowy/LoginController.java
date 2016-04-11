@@ -40,6 +40,7 @@ public class LoginController implements Initializable {
         zalogowano.setVisible(success);
         Node node=(Node) event.getSource();
         Stage stage=(Stage) node.getScene().getWindow();
+        stage.setResizable(false);
         Parent root;
         root = FXMLLoader.load(getClass().getResource("AdminScreen.fxml"));        
         Scene scene = new Scene(root);        
