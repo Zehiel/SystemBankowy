@@ -13,8 +13,9 @@
    <children>
       <Pane layoutX="377.0" layoutY="23.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="23.0">
          <children>
-            <Button fx:id="getAllButton" layoutY="211.0" mnemonicParsing="false" onAction="#handleGetAllButton" text="Pokaz" />
+            <Button fx:id="getAllButton" layoutY="211.0" mnemonicParsing="false" onAction="#handleGetAllButton" text="Zaladuj" />
             <ListView fx:id="ClientsList" prefHeight="200.0" prefWidth="200.0" />
+            <Button fx:id="deleteButton" layoutX="65.0" layoutY="211.0" mnemonicParsing="false" onAction="#handleDeleteButton" text="Usun" />
          </children>
       </Pane>
       <Pane fx:id="AddPane" layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="243.0" prefWidth="239.0" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="23.0">

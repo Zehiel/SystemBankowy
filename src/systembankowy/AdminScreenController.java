@@ -8,6 +8,8 @@ package systembankowy;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,10 +41,16 @@ public class AdminScreenController implements Initializable {
     @FXML    private ListView ClientsList;
     
     Operations op = new Operations();
-    
+    int selectedID;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        ClientsList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Client>() {
+            @Override
+            public void changed(ObservableValue<? extends Client> observable, Client oldValue, Client newValue) {
+                selectedID = newValue.getAccountNumber();
+                System.out.println("Wybrano klienta o ID:" + selectedID);
+            }
+        });
     }
     @FXML
     private void handleAddButton(ActionEvent event) throws IOException, ClassNotFoundException {
@@ -76,6 +84,13 @@ public class AdminScreenController implements Initializable {
                 return cell;
             }
         });
+       
+        
+    }
+    
+    @FXML
+    private void handleDeleteButton(ActionEvent event){
+            
     }
     
 }
