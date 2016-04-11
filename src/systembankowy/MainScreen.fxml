@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.65" fx:controller="systembankowy.MainScreenController">
+   <children>
+      <Label fx:id="userLabel" layoutX="14.0" layoutY="14.0" prefHeight="24.0" prefWidth="104.0" text="Użytkownik:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="fundsLabel" layoutX="14.0" layoutY="38.0" text="Stan konta:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <SplitMenuButton layoutX="495.0" layoutY="14.0" mnemonicParsing="false" text="Wyloguj">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Panel Administracyjny" />
+          <MenuItem mnemonicParsing="false" text="Wylącz" />
+        </items>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </SplitMenuButton>
+   </children>
+</AnchorPane>
