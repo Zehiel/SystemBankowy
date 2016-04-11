@@ -13,9 +13,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import java.lang.String;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -33,7 +36,7 @@ public class AdminScreenController implements Initializable {
     @FXML    private TextField addressBox;
     @FXML    private PasswordField passwordBox;    
     @FXML    private Label addSuccess;
-    @FXML    private TextArea ClientsArea;
+    @FXML    private ListView ClientsList;
     
     Operations op = new Operations();
     
@@ -50,11 +53,29 @@ public class AdminScreenController implements Initializable {
     @FXML
     private void handleGetAllButton(ActionEvent event) throws ClassNotFoundException{
         op.Load("C:/Java/clients.txt");
-        String napis = new String();
-        for (Client item : op.clients) {   
-            napis = napis + item.getAccountNumber() + " " + item.getName() + " " + item.getSurname() + " " + item.getFunds() + "\n";
-        }
-        ClientsArea.setText(napis);
+        ObservableList<Client> myObservableList = FXCollections.observableList(op.clients);
+        ClientsList.setItems(myObservableList);
+         
+        ClientsList.setCellFactory(new Callback<ListView<Client>, ListCell<Client>>(){
+ 
+            @Override
+            public ListCell<Client> call(ListView<Client> p) {
+                 
+                ListCell<Client> cell = new ListCell<Client>(){
+ 
+                    @Override
+                    protected void updateItem(Client t, boolean bln) {
+                        super.updateItem(t, bln);
+                        if (t != null) {
+                            setText(t.getAccountNumber() + " " + t.getName() + " " + t.getSurname()+ " " + t.getFunds() + "$ ");
+                        }
+                    }
+ 
+                };
+                 
+                return cell;
+            }
+        });
     }
     
 }
