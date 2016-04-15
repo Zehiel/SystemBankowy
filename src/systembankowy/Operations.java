@@ -78,6 +78,7 @@ public class Operations {
         if(clients.size()==1){
                 last = 10001;
         }
+        
         for(int i=1;i<clients.size();i++) {
             last = clients.get(i).getAccountNumber();
                 

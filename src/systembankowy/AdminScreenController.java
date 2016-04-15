@@ -7,6 +7,7 @@ package systembankowy;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,6 +19,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
@@ -25,6 +29,7 @@ import javafx.util.Callback;
 /**
  * FXML Controller class
  *
+ * 
  * @author Andrew
  */
 public class AdminScreenController implements Initializable {
@@ -52,7 +57,7 @@ public class AdminScreenController implements Initializable {
                     selectedID = newValue.getAccountNumber();
                 }
                 
-                //System.out.println("Wybrano klienta o ID:" + selectedID);
+                System.out.println("Wybrano klienta o ID:" + selectedID);
             }
         });
         
@@ -86,9 +91,19 @@ public class AdminScreenController implements Initializable {
     }
     @FXML
     private void handleAddButton(ActionEvent event) throws IOException, ClassNotFoundException {
-        
-        op.AddClient(nameBox.getText(), surnameBox.getText(), peselBox.getText(), addressBox.getText(), passwordBox.getText());       
-        refreshList();        
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Potwierdz");
+        alert.setHeaderText("Potwierdzenie");
+        alert.setContentText("Czy na pewno chcesz dodac klienta?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+           op.AddClient(nameBox.getText(), surnameBox.getText(), peselBox.getText(), addressBox.getText(), passwordBox.getText());       
+           refreshList();  
+        } else {
+           refreshList();   
+        }
+         
     }
     @FXML
     private void handleGetAllButton(ActionEvent event) throws ClassNotFoundException {
@@ -97,15 +112,25 @@ public class AdminScreenController implements Initializable {
     
     @FXML
     private void handleDeleteButton(ActionEvent event) throws ClassNotFoundException{
-        
-        op.DeleteClient(selectedID);
-        int selectedIdx = ClientsList.getSelectionModel().getSelectedIndex();         
-         final int newSelectedIdx =
-            (selectedIdx == ClientsList.getItems().size() - 1)
-               ? selectedIdx - 1
-               : selectedIdx;
-         refreshList();
-         ClientsList.getSelectionModel().select(newSelectedIdx);
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Potwierdz");
+        alert.setHeaderText("Potwierdzenie");
+        alert.setContentText("Czy na pewno chcesz usunac klienta od ID:" +selectedID);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            op.DeleteClient(selectedID);
+            int selectedIdx = ClientsList.getSelectionModel().getSelectedIndex();         
+            final int newSelectedIdx =
+               (selectedIdx == ClientsList.getItems().size() - 1)
+                  ? selectedIdx - 1
+                  : selectedIdx;
+            refreshList();
+            ClientsList.getSelectionModel().select(newSelectedIdx); 
+        } else {
+           refreshList();   
+        }
+       
          
          
          
