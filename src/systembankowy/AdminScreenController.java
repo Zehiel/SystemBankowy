@@ -84,6 +84,21 @@ public class AdminScreenController implements Initializable {
            };
            TextFormatter<String> textPesel = new TextFormatter<>(peselFilter);
            
+        UnaryOperator<Change> idFilter = change -> {
+            String text = change.getText();
+            
+            if(change.getControlNewText().length()>5){
+                return null;
+            }
+            else{
+                if (text.matches("^[0-9]*$")) {
+                    return change;
+                }
+            }
+            return null;
+           };
+           TextFormatter<String> idPesel = new TextFormatter<>(idFilter);
+           
         UnaryOperator<Change> alphaFilter = change -> {
             String text = change.getText();
 
@@ -95,12 +110,17 @@ public class AdminScreenController implements Initializable {
            };
            TextFormatter<String> textAlpha = new TextFormatter<>(alphaFilter);
            TextFormatter<String> textAlpha2 = new TextFormatter<>(alphaFilter);
+           TextFormatter<String> textAlpha3 = new TextFormatter<>(alphaFilter);
+           TextFormatter<String> textPesel2 = new TextFormatter<>(peselFilter);
+           TextFormatter<String> textID = new TextFormatter<>(idFilter);
            
         
            
         nameBox.setTextFormatter(textAlpha);
         surnameBox.setTextFormatter(textAlpha2);
         peselBox.setTextFormatter(textPesel);
+        
+        
            
         
         
@@ -112,6 +132,7 @@ public class AdminScreenController implements Initializable {
                     selectedID = newValue.getAccountNumber();
                 }
                 
+                
                 System.out.println("Wybrano klienta o ID:" + selectedID);
             }
         });
@@ -121,6 +142,30 @@ public class AdminScreenController implements Initializable {
             public void changed(ObservableValue ov,Number oldValue,Number newValue) {
                 if(newValue!=null){
                     selectedSearch = newValue;
+                    searchBox.setText("");
+                    switch(selectedSearch.intValue()){
+                        case 0:
+                            searchBox.setTextFormatter(textID);
+                            searchBox.setVisible(true);
+                            break;
+                        case 1:
+                            searchBox.setTextFormatter(textAlpha3);
+                            searchBox.setVisible(true);
+                            break;
+                        case 2:
+                            searchBox.setTextFormatter(textAlpha3);
+                            searchBox.setVisible(true);
+                            break;
+                        case 3:
+                            searchBox.setTextFormatter(textPesel2);
+                            searchBox.setVisible(true);
+                            break;
+                        case 4:
+                            searchBox.setVisible(true);
+                        case 5:
+                            searchBox.setVisible(false);
+
+                    }
                 }
                 System.out.println("Wybrano opcje wyszukiwania nr:" + selectedSearch);
             }
@@ -198,21 +243,7 @@ public class AdminScreenController implements Initializable {
     }
     @FXML
     private void handleSearchButton(ActionEvent event) {
-        switch(selectedSearch.intValue()){
-            case 0:
-                
-            case 1:
-                
-            case 2:
-                
-            case 3:
-                
-            case 4:
-                
-            case 5:
-                
-            case 6:
-        }
+        
     }
     
 }
