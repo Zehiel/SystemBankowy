@@ -20,9 +20,20 @@ import java.util.List;
  * @author Andrew
  */
 public class Operations {
-    public List<Client> clients = new ArrayList<>();
-    
+    public List<Client> clients = new ArrayList<>();    
     public Client itemToRemove = new Client();
+    
+    public class IncorrectTransaction extends Exception {
+
+    public IncorrectTransaction(String message) {
+        super(message);
+    }
+
+    public IncorrectTransaction(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+
+}
     
     public void Save(String path){
         try {
@@ -73,6 +84,28 @@ public class Operations {
         
         Save("C:/Java/clients.txt");
     }
+    
+    public void Transaction(int fromID,int toID,double amount) throws ClassNotFoundException, IncorrectTransaction{
+        Load("C:/Java/clients.txt");
+        Client from=null,to=null;
+        for (Client current : clients){
+            if(current.getAccountNumber()==fromID){
+                from=current;                
+            }
+            if(current.getAccountNumber()==toID){
+                to=current;
+            }            
+        }
+        if(from==null || to==null || amount<=0){
+            throw new IncorrectTransaction("Zle parametry");
+        }
+        if(from.getFunds()>=amount){
+            from.setFunds(from.getFunds()-amount);
+            to.setFunds(to.getFunds()+amount);
+        }
+        Save("C:/Java/clients.txt");
+    }
+    
     private int generateID(){
         int last=10000,generated;
         if(clients.size()==1){
