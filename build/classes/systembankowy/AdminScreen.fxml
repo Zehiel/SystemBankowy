@@ -47,6 +47,7 @@
                   <Font name="System Bold" size="19.0" />
                </font>
             </Label>
+            <Button fx:id="clearButton" layoutX="67.0" layoutY="204.0" mnemonicParsing="false" onAction="#handleClearButton" text="Wyczysc" />
          </children>
       </Pane>
       <Button fx:id="searchButton" layoutX="509.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleSearchButton" text="Szukaj" />

@@ -14,7 +14,7 @@
    <children>
       <Pane layoutX="372.0" layoutY="16.0" prefHeight="250.0" prefWidth="200.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="16.0">
          <children>
-            <Button fx:id="getAllButton" layoutY="221.0" mnemonicParsing="false" onAction="#handleGetAllButton" text="Zaladuj" />
+            <Button fx:id="getAllButton" layoutY="221.0" mnemonicParsing="false" onAction="#handleGetAllButton" text="Odswiez" />
             <ListView fx:id="ClientsList" layoutY="28.0" prefHeight="182.0" prefWidth="200.0" />
             <Button fx:id="deleteButton" layoutX="65.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleDeleteButton" text="Usun" />
             <Label layoutX="79.0" text="Lista">
@@ -47,6 +47,7 @@
                   <Font name="System Bold" size="19.0" />
                </font>
             </Label>
+            <Button fx:id="clearButton" layoutX="67.0" layoutY="204.0" mnemonicParsing="false" onAction="#handleClearButton" text="Wyczysc" />
          </children>
       </Pane>
       <Button fx:id="searchButton" layoutX="509.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleSearchButton" text="Szukaj" />

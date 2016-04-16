@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -67,7 +69,16 @@ public class AdminScreenController implements Initializable {
         peselBox.setTooltip(new Tooltip("Nie moze byc puste"));
         addressBox.setTooltip(new Tooltip("Nie moze byc puste"));
         
-       
+        try {
+            refreshList();
+        } catch (ClassNotFoundException ex) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Nie znaleziono bazy");
+            alert.setHeaderText("Plik nie istnieje lub jest uszkodzony");
+            alert.setContentText("Sprawdz czy plik clients.txt znajduje sie w odpowiednim katalogu.");
+
+            alert.showAndWait();
+        }
         
         UnaryOperator<Change> peselFilter = change -> {
             String text = change.getText();
@@ -199,25 +210,51 @@ public class AdminScreenController implements Initializable {
         });
        
     }
+    
+    private void clearAddInput() {
+        nameBox.setText("");
+        surnameBox.setText("");
+        peselBox.setText("");
+        addressBox.setText("");
+        passwordBox.setText("");
+    }
+    
     @FXML
     private void handleAddButton(ActionEvent event) throws IOException, ClassNotFoundException {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Potwierdz");
-        alert.setHeaderText("Potwierdzenie");
-        alert.setContentText("Czy na pewno chcesz dodac klienta?");
+        
+        if("".equals(nameBox.getText()) || "".equals(surnameBox.getText()) || "".equals(peselBox.getText()) || "".equals(addressBox.getText()) || "".equals(passwordBox.getText())) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Puste Pole");
+            alert.setHeaderText("Nie uzupelniono wszystkich wymaganych pol!");
+            alert.setContentText("Uzupelnij brakujace informacje i sprobuj ponownie");
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-           op.AddClient(nameBox.getText(), surnameBox.getText(), peselBox.getText(), addressBox.getText(), passwordBox.getText());       
-           refreshList();  
-        } else {
-           refreshList();   
+            alert.showAndWait();
         }
-         
+        else {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Potwierdz");
+            alert.setHeaderText("Potwierdzenie");
+            alert.setContentText("Czy na pewno chcesz dodac klienta?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+               op.AddClient(nameBox.getText(), surnameBox.getText(), peselBox.getText(), addressBox.getText(), passwordBox.getText());       
+               refreshList();
+               clearAddInput();
+            } else {
+               refreshList();   
+            }
+        }        
     }
+    
     @FXML
     private void handleGetAllButton(ActionEvent event) throws ClassNotFoundException {
         refreshList();        
+    }
+    
+    @FXML
+    private void handleClearButton(ActionEvent event) throws ClassNotFoundException {
+        clearAddInput();     
     }
     
     @FXML
