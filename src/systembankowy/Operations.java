@@ -85,6 +85,21 @@ public class Operations {
         Save("C:/Java/clients.txt");
     }
     
+    public void Admin(int ID) throws ClassNotFoundException{
+        Load("C:/Java/clients.txt");
+        for (Client current : clients){
+            if(current.getAccountNumber()==ID){
+                if(current.isAdmin()) {
+                    current.setAdmin(false);
+                }
+                else {
+                    current.setAdmin(true);
+                }
+            }           
+        }
+        Save("C:/Java/clients.txt");
+    }
+    
     public void Transaction(int fromID,int toID,double amount) throws ClassNotFoundException, IncorrectTransaction{
         Load("C:/Java/clients.txt");
         Client from=null,to=null;

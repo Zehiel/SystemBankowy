@@ -7,11 +7,11 @@ package systembankowy;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -25,6 +25,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -53,15 +54,19 @@ public class AdminScreenController implements Initializable {
     @FXML    private ListView ClientsList;
     @FXML    private ChoiceBox searchChoice;
     @FXML    private TextField searchBox;
+    @FXML    private CheckBox adminCheckBox;
+    
+    
     
     private final Operations op = new Operations();
     private int selectedID;
-    private Number selectedSearch;
+    private Number selectedSearch=0;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         searchChoice.getItems().addAll("ID","Imie","Nazwisko","Pesel","Ulica","Admin");
         searchChoice.getSelectionModel().selectFirst();
+        adminCheckBox.setSelected(false);
         
         passwordBox.setTooltip(new Tooltip("Haslo musi skladac sie z min 6 znaków"));
         nameBox.setTooltip(new Tooltip("Nie moze byc puste"));
@@ -156,25 +161,33 @@ public class AdminScreenController implements Initializable {
                     searchBox.setText("");
                     switch(selectedSearch.intValue()){
                         case 0:
+                            adminCheckBox.setVisible(false);
                             searchBox.setTextFormatter(textID);
                             searchBox.setVisible(true);
                             break;
                         case 1:
+                            adminCheckBox.setVisible(false);
                             searchBox.setTextFormatter(textAlpha3);
                             searchBox.setVisible(true);
                             break;
                         case 2:
+                            adminCheckBox.setVisible(false);
                             searchBox.setTextFormatter(textAlpha3);
                             searchBox.setVisible(true);
                             break;
                         case 3:
+                            adminCheckBox.setVisible(false);
                             searchBox.setTextFormatter(textPesel2);
                             searchBox.setVisible(true);
                             break;
                         case 4:
+                            adminCheckBox.setVisible(false);
+                            searchBox.setTextFormatter(null);
                             searchBox.setVisible(true);
+                            break;
                         case 5:
                             searchBox.setVisible(false);
+                            adminCheckBox.setVisible(true);
 
                     }
                 }
@@ -199,7 +212,7 @@ public class AdminScreenController implements Initializable {
                     protected void updateItem(Client t, boolean bln) {
                         super.updateItem(t, bln);
                         if (t != null) {
-                            setText(t.getAccountNumber() + " " + t.getName() + " " + t.getSurname()+ " " + t.getFunds() + "$ ");
+                            setText(t.getAccountNumber() + " " + t.getName() + " " + t.getSurname()+ " " + t.getFunds() + " " + t.isAdmin());
                         }
                     }
  
@@ -212,11 +225,11 @@ public class AdminScreenController implements Initializable {
     }
     
     private void clearAddInput() {
-        nameBox.setText("");
-        surnameBox.setText("");
-        peselBox.setText("");
-        addressBox.setText("");
-        passwordBox.setText("");
+        nameBox.clear();
+        surnameBox.clear();
+        peselBox.clear();
+        addressBox.clear();
+        passwordBox.clear();
     }
     
     @FXML
@@ -279,8 +292,82 @@ public class AdminScreenController implements Initializable {
         }
     }
     @FXML
-    private void handleSearchButton(ActionEvent event) {
-        
+    private void handleMakeAdminButton(ActionEvent event) throws ClassNotFoundException{
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Potwierdz");
+        alert.setHeaderText("Potwierdzenie");
+        alert.setContentText("Czy na pewno chcesz dodac/odebrac uprawnienia klientowi:" +selectedID+"?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            op.Admin(selectedID);
+            refreshList();
+        }
+        else {
+            refreshList();
+        }
     }
+    @FXML
+    private void handleSearchButton(ActionEvent event) throws ClassNotFoundException {
+        op.Load("C:/Java/clients.txt");
+        List<Client> searchCandidates = new ArrayList<>();
+        for (Client current : op.clients){
+            switch(selectedSearch.intValue()){
+                case 0:
+                    if(current.getAccountNumber()==Integer.parseInt(searchBox.getText())){
+                        searchCandidates.add(current);
+                    }
+                    break;
+                case 1:
+                    if(current.getName() == null ? searchBox.getText() == null : current.getName().equals(searchBox.getText())){
+                        searchCandidates.add(current);
+                    }
+                    break;
+                case 2:
+                    if(current.getSurname() == null ? searchBox.getText() == null : current.getSurname().equals(searchBox.getText())){
+                        searchCandidates.add(current);
+                    }
+                    break;
+                case 3:
+                    if(current.getPesel() == null ? searchBox.getText() == null : current.getPesel().equals(searchBox.getText())){
+                        searchCandidates.add(current);
+                    }                                    
+                    break;
+                case 4:
+                    if(current.getAddress().contains(searchBox.getText())){
+                        searchCandidates.add(current);
+                    }
+
+                case 5:
+                    if(current.isAdmin()==adminCheckBox.isSelected()){
+                        searchCandidates.add(current);
+                    }
+            }
+        }
+        
+        ObservableList<Client> SearchList = FXCollections.observableList(searchCandidates);
+        ClientsList.setItems(SearchList);         
+        ClientsList.setCellFactory(new Callback<ListView<Client>, ListCell<Client>>(){
+ 
+            @Override
+            public ListCell<Client> call(ListView<Client> p) {
+                 
+                ListCell<Client> cell = new ListCell<Client>(){
+ 
+                    @Override
+                    protected void updateItem(Client t, boolean bln) {
+                        super.updateItem(t, bln);
+                        if (t != null) {                            
+                            setText(t.getAccountNumber() + " " + t.getName() + " " + t.getSurname()+ " " + t.getFunds() + " " + t.isAdmin());
+                        }
+                    }
+ 
+                };
+                 
+                return cell;
+            }
+        });    
+    }
+    
     
 }
