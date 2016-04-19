@@ -20,7 +20,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -46,7 +45,8 @@ public class LoginController implements Initializable {
         //badLogin.setVisible(false);
         //badPass.setVisible(false);
         zalogowano.setVisible(success);
-        
+        loginField.clear();
+        passwordField.clear();
         
         if(success==true){
             Node node=(Node) event.getSource();
@@ -65,18 +65,19 @@ public class LoginController implements Initializable {
                 customer=current;
                 break;
             }
-        }
-        if(getCustomer().getPassword() == null ? pass == null : getCustomer().getPassword().equals(pass)){
-            success=true;
-            if(getCustomer().isAdmin()==true){
-                root = FXMLLoader.load(getClass().getResource("AdminScreen.fxml"));
-            }
             else {
-                root = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
+                if(getCustomer().getPassword() == null ? pass == null : getCustomer().getPassword().equals(pass)){
+                    success=true;
+                    if(getCustomer().isAdmin()==true){
+                        root = FXMLLoader.load(getClass().getResource("AdminScreen.fxml"));
+                    }
+                    else {
+                        root = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
+                    }
+                } 
             }
-        }
-       
-        if("root".equals(login) && "toor".equals(pass)){
+        }       
+        if("9999".equals(login) && "toor".equals(pass)){
             root = FXMLLoader.load(getClass().getResource("AdminScreen.fxml"));
             success=true;
         }
