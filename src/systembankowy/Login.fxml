@@ -20,22 +20,24 @@
             <Font name="System Bold" size="29.0" />
          </font>
       </Label>
-      <Pane layoutX="220.0" layoutY="141.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="220.0" AnchorPane.topAnchor="141.0">
+      <Pane layoutX="185.0" layoutY="141.0" prefHeight="200.0" prefWidth="333.0" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="185.0" AnchorPane.rightAnchor="122.0" AnchorPane.topAnchor="141.0">
          <children>
-            <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="14.0" text="PANEL LOGOWANIA">
+            <Label alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="44.0" layoutY="14.0" text="PANEL LOGOWANIA">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="14.0" layoutY="53.0" text="Login:" />
-            <TextField fx:id="loginField" layoutX="51.0" layoutY="49.0" prefHeight="10.0" prefWidth="130.0" />
-            <Label layoutX="14.0" layoutY="90.0" text="Hasło:" />
-            <PasswordField fx:id="passwordField" layoutX="51.0" layoutY="88.0" prefHeight="25.0" prefWidth="130.0" />            
-            <Button fx:id="loginButton" layoutX="52.0" layoutY="139.0" mnemonicParsing="false" onAction="#handleLoginButton" prefHeight="38.0" prefWidth="96.0" text="ZALOGUJ">
+            <Label layoutX="10.0" layoutY="53.0" prefHeight="17.0" prefWidth="73.0" text="Numer konta:" />
+            <TextField fx:id="loginField" layoutX="90.0" layoutY="49.0" prefHeight="10.0" prefWidth="130.0" />
+            <Label layoutX="47.0" layoutY="90.0" text="Hasło:" />
+            <PasswordField fx:id="passwordField" layoutX="90.0" layoutY="86.0" prefHeight="25.0" prefWidth="130.0" />            
+            <Button fx:id="loginButton" layoutX="73.0" layoutY="132.0" mnemonicParsing="false" onAction="#handleLoginButton" prefHeight="38.0" prefWidth="96.0" text="ZALOGUJ">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Button>
+            <Label fx:id="badLogin" layoutX="228.0" layoutY="53.0" text="Nie znaleziono konta o podanym ID" visible="false" />
+            <Label fx:id="badPass" layoutX="228.0" layoutY="90.0" text="Błędne hasło" visible="false" />
          </children>
       </Pane>
    </children>

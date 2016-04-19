@@ -16,19 +16,24 @@ import javafx.scene.control.Label;
  *
  * @author Andrew
  */
+
+
 public class MainScreenController implements Initializable {
 
     @FXML
     private Label userLabel;
     @FXML
     private Label fundsLabel;
-
+    
+    Client customer=LoginController.getCustomer();
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        String text = customer.getName() + " " + customer.getSurname();
+        userLabel.setText("Uzytkownik: " + text);        
+        fundsLabel.setText("Stan konta: " + customer.getFunds() + "$");
     }    
     
 }

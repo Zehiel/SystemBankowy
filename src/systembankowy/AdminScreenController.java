@@ -113,7 +113,7 @@ public class AdminScreenController implements Initializable {
             }
             return null;
            };
-           TextFormatter<String> idPesel = new TextFormatter<>(idFilter);
+           
            
         UnaryOperator<Change> alphaFilter = change -> {
             String text = change.getText();
