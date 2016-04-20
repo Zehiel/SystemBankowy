@@ -154,7 +154,7 @@ public class AdminScreenController implements Initializable {
                 }
                 
                 
-                System.out.println("Wybrano klienta o ID:" + selectedID);
+                //System.out.println("Wybrano klienta o ID:" + selectedID);
             }
         });
         

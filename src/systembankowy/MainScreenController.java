@@ -10,8 +10,6 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,7 +52,7 @@ public class MainScreenController implements Initializable {
         
         String dane = customer.getName() + " " + customer.getSurname();
         userLabel.setText("Uzytkownik: " + dane);        
-        fundsLabel.setText("Stan konta: " + customer.getFunds() + "$");
+        fundsLabel.setText("Stan konta: " + String.format("%.2f", customer.getFunds()) + "$");
         
         UnaryOperator<TextFormatter.Change> idFilter = change -> {
             String text = change.getText();
@@ -111,7 +109,7 @@ public class MainScreenController implements Initializable {
             paymentField.clear();
             op.Save("C:/java/clients.txt");
             RefreshClient();
-            fundsLabel.setText("Stan konta: " + customer.getFunds() + "$");
+            fundsLabel.setText("Stan konta: " + String.format("%.2f", customer.getFunds()) + "$");
         }
         else{  
             
@@ -142,13 +140,13 @@ public class MainScreenController implements Initializable {
                 withdrawField.clear();
                 op.Save("C:/java/clients.txt");
                 RefreshClient();
-                fundsLabel.setText("Stan konta: " + customer.getFunds() + "$");
+                fundsLabel.setText("Stan konta: " + String.format("%.2f", customer.getFunds()) + "$");
 
             }
             else{
 
             }        
-        }catch (Operations.IncorrectTransaction ex) {
+        }catch (Operations.IncorrectTransaction | NumberFormatException ex) {
                 Alert alert2 = new Alert(Alert.AlertType.WARNING);
                 alert2.setTitle("Nieprawidlowe parametry transakcji");
                 alert2.setHeaderText("Nieprawidlowe parametry");
@@ -175,13 +173,13 @@ public class MainScreenController implements Initializable {
                     transactionField.clear();                
                     op.Save("C:/java/clients.txt");
                     RefreshClient();
-                    fundsLabel.setText("Stan konta: " + customer.getFunds() + "$");
+                    fundsLabel.setText("Stan konta: " + String.format("%.2f", customer.getFunds()) + "$");
 
             }
             else{
 
             }        
-        }catch (Operations.IncorrectTransaction ex) {
+        }catch (Operations.IncorrectTransaction | NumberFormatException ex) {
                 Alert alert2 = new Alert(Alert.AlertType.WARNING);
                 alert2.setTitle("Nieprawidlowe parametry transakcji");
                 alert2.setHeaderText("Nieprawidlowe parametry");
