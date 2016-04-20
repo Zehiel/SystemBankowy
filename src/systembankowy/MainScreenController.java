@@ -99,6 +99,7 @@ public class MainScreenController implements Initializable {
     @FXML
     void handlePaymentButton(ActionEvent event) throws ClassNotFoundException{
         op.Load("C:/java/clients.txt");
+        try {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Potwierdz");
         alert.setHeaderText("Potwierdzenie");
@@ -106,87 +107,88 @@ public class MainScreenController implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
-            try {
-                op.Payment(customer.getAccountNumber(),Double.parseDouble(paymentField.getText()));
-                paymentField.clear();
-                op.Save("C:/java/clients.txt");
-                RefreshClient();
-                fundsLabel.setText("Stan konta: " + customer.getFunds() + "$");
-            }catch (Operations.IncorrectTransaction ex) {
-                Alert alert2 = new Alert(Alert.AlertType.WARNING);
+            op.Payment(customer.getAccountNumber(),Double.parseDouble(paymentField.getText()));
+            paymentField.clear();
+            op.Save("C:/java/clients.txt");
+            RefreshClient();
+            fundsLabel.setText("Stan konta: " + customer.getFunds() + "$");
+        }
+        else{  
+            
+        }
+        }catch (Operations.IncorrectTransaction|NumberFormatException ex) {
+            Alert alert2 = new Alert(Alert.AlertType.WARNING);
                 alert2.setTitle("Nieprawidlowe parametry transakcji");
                 alert2.setHeaderText("Nieprawidlowe parametry");
                 alert2.setContentText("Nie podano kwoty,id ,ktores z nich jest nie prawidlowe lub nie posiadasz odpowiednich srodkow");
 
                 alert2.showAndWait();
-            }        
         }
-        else{
-            
-        }        
     }
     
     @FXML
     void handleWithdrawButton(ActionEvent event) throws ClassNotFoundException{
         op.Load("C:/java/clients.txt");
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Potwierdz");
-        alert.setHeaderText("Potwierdzenie");
-        alert.setContentText("Czy na pewno chcesz wyplacic " + Double.parseDouble(withdrawField.getText()) + "$?");
+        try {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Potwierdz");
+            alert.setHeaderText("Potwierdzenie");
+            alert.setContentText("Czy na pewno chcesz wyplacic " + Double.parseDouble(withdrawField.getText()) + "$?");
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            try {
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+
                 op.Withdraw(customer.getAccountNumber(),Double.parseDouble(withdrawField.getText()));
                 withdrawField.clear();
                 op.Save("C:/java/clients.txt");
                 RefreshClient();
                 fundsLabel.setText("Stan konta: " + customer.getFunds() + "$");
-            }catch (Operations.IncorrectTransaction ex) {
+
+            }
+            else{
+
+            }        
+        }catch (Operations.IncorrectTransaction ex) {
                 Alert alert2 = new Alert(Alert.AlertType.WARNING);
                 alert2.setTitle("Nieprawidlowe parametry transakcji");
                 alert2.setHeaderText("Nieprawidlowe parametry");
                 alert2.setContentText("Nie podano kwoty,id ,ktores z nich jest nie prawidlowe lub nie posiadasz odpowiednich srodkow");
 
                 alert2.showAndWait();
-            }        
         }
-        else{
-            
-        }        
-        
     }
     
     @FXML
     void handleTransactionButton(ActionEvent event) throws ClassNotFoundException{
         op.Load("C:/java/clients.txt");
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Potwierdz");
-        alert.setHeaderText("Potwierdzenie");
-        alert.setContentText("Czy na pewno chcesz przelac " + Double.parseDouble(transactionField.getText()) + "$ na konto o nr " + Integer.parseInt(toIDField.getText()) + "?");
+        try {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Potwierdz");
+            alert.setHeaderText("Potwierdzenie");
+            alert.setContentText("Czy na pewno chcesz przelac " + Double.parseDouble(transactionField.getText()) + "$ na konto o nr " + Integer.parseInt(toIDField.getText()) + "?");
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            try {
-                op.Transaction(customer.getAccountNumber(),Integer.parseInt(toIDField.getText()),Double.parseDouble(transactionField.getText()));
-                toIDField.clear();
-                transactionField.clear();                
-                op.Save("C:/java/clients.txt");
-                RefreshClient();
-                fundsLabel.setText("Stan konta: " + customer.getFunds() + "$");
-            }catch (Operations.IncorrectTransaction ex) {
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+
+                    op.Transaction(customer.getAccountNumber(),Integer.parseInt(toIDField.getText()),Double.parseDouble(transactionField.getText()));
+                    toIDField.clear();
+                    transactionField.clear();                
+                    op.Save("C:/java/clients.txt");
+                    RefreshClient();
+                    fundsLabel.setText("Stan konta: " + customer.getFunds() + "$");
+
+            }
+            else{
+
+            }        
+        }catch (Operations.IncorrectTransaction ex) {
                 Alert alert2 = new Alert(Alert.AlertType.WARNING);
                 alert2.setTitle("Nieprawidlowe parametry transakcji");
                 alert2.setHeaderText("Nieprawidlowe parametry");
                 alert2.setContentText("Nie podano kwoty,id ,ktores z nich jest nie prawidlowe lub nie posiadasz odpowiednich srodkow");
 
                 alert2.showAndWait();
-            }        
         }
-        else{
-            
-        }        
-        
     }
     void RefreshClient() throws ClassNotFoundException {
         op.Load("C:/java/clients.txt");
