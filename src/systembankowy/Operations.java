@@ -102,6 +102,7 @@ public class Operations {
     
     public void Transaction(int fromID,int toID,double amount) throws ClassNotFoundException, IncorrectTransaction{
         Load("C:/Java/clients.txt");
+        
         Client from=null,to=null;
         for (Client current : clients){
             if(current.getAccountNumber()==fromID){
@@ -118,8 +119,45 @@ public class Operations {
             from.setFunds(from.getFunds()-amount);
             to.setFunds(to.getFunds()+amount);
         }
+        else{
+            throw new IncorrectTransaction("Zle parametry");
+        }
         Save("C:/Java/clients.txt");
     }
+    
+   public void Withdraw(int fromID,double amount) throws IncorrectTransaction{
+        Client from=null;
+        for (Client current : clients){
+            if(current.getAccountNumber()==fromID){
+                from=current;                
+            }                     
+        }
+        if(from==null || amount<=0){
+            throw new IncorrectTransaction("Zle parametry");
+        }
+        if(from.getFunds()>=amount){
+            from.setFunds(from.getFunds()-amount); 
+            Save("C:/Java/clients.txt");
+        }
+        else{
+            throw new IncorrectTransaction("Zle parametry");            
+        }
+        
+   }
+   public void Payment(int fromID,double amount) throws IncorrectTransaction{
+       Client from=null;
+        for (Client current : clients){
+            if(current.getAccountNumber()==fromID){
+                from=current;                
+            }                     
+        }
+        if(from==null || amount<=0){
+            throw new IncorrectTransaction("Zle parametry");
+        }else{
+             from.setFunds(from.getFunds()+amount);
+             Save("C:/Java/clients.txt");
+        }
+   }
     
     private int generateID(){
         int last=10000,generated;
@@ -138,4 +176,5 @@ public class Operations {
         generated = last+1;
         return generated;
     }
+    
 }

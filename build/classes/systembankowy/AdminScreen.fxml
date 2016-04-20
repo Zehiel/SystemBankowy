@@ -65,5 +65,6 @@
             <CheckBox fx:id="adminCheckBox" layoutX="226.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" visible="false" />
          </children>
       </Pane>
+      <Button fx:id="logOutButton" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleLogOutButton" text="Wyloguj" />
    </children>
 </AnchorPane>

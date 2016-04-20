@@ -63,9 +63,6 @@ public class LoginController implements Initializable {
         for (Client current : op.clients){
             if(current.getAccountNumber()==Integer.parseInt(login)){
                 customer=current;
-                break;
-            }
-            else {
                 if(getCustomer().getPassword() == null ? pass == null : getCustomer().getPassword().equals(pass)){
                     success=true;
                     if(getCustomer().isAdmin()==true){
@@ -75,12 +72,16 @@ public class LoginController implements Initializable {
                         root = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
                     }
                 } 
+                
+            }
+            else {
+                if("9999".equals(login) && "toor".equals(pass)){
+                    root = FXMLLoader.load(getClass().getResource("AdminScreen.fxml"));
+                    success=true;
+                }
             }
         }       
-        if("9999".equals(login) && "toor".equals(pass)){
-            root = FXMLLoader.load(getClass().getResource("AdminScreen.fxml"));
-            success=true;
-        }
+        
         return success;
     }
     
